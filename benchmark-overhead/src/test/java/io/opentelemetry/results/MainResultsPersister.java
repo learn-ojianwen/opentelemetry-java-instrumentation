@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class MainResultsPersister implements ResultsPersister {
@@ -24,9 +26,11 @@ public class MainResultsPersister implements ResultsPersister {
   public void write(List<AppPerfResults> results) {
     Path outputDir = Paths.get("results", config.getName());
     ensureCreated(outputDir);
+
+    long timestamp = Instant.now().toEpochMilli();
     new ConsoleResultsPersister().write(results);
-    new FileSummaryPersister(outputDir.resolve("summary.txt")).write(results);
-    new CsvPersister(outputDir.resolve("results.csv")).write(results);
+    new FileSummaryPersister(outputDir.resolve("summary_" + timestamp + ".txt")).write(results);
+    new CsvPersister(outputDir.resolve("results_" + timestamp + ".csv")).write(results);
   }
 
   private void ensureCreated(Path outputDir) {

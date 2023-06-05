@@ -9,12 +9,13 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Agent {
 
-  static final String OTEL_LATEST =
+  public static final String OTEL_LATEST =
       "https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar";
 
   public static final Agent NONE = new Agent("none", "no agent at all");
@@ -22,6 +23,28 @@ public class Agent {
       new Agent("latest", "latest mainstream release", OTEL_LATEST);
   public static final Agent LATEST_SNAPSHOT =
       new Agent("snapshot", "latest available snapshot version from main");
+
+
+
+  public static final Agent LATEST_RELEASE_DEFAULT_DISABLED =
+      new Agent(
+          "latest-default-disabled",
+          "latest mainstream release default disabled",
+          OTEL_LATEST,
+          Arrays.asList(
+            "-Dotel.exporter.otlp.compression=gzip",
+            "-Dotel.instrumentation.common.default-enabled=false"
+      ));
+
+  public static final Agent LATEST_RELEASE_JDBC_ONLY =
+      new Agent("latest-jdbc-only",
+          "latest mainstream release default disabled jdbc enabled",
+          OTEL_LATEST,
+          Arrays.asList(
+            "-Dotel.exporter.otlp.compression=gzip",
+            "-Dotel.instrumentation.common.default-enabled=false",
+            "-Dotel.instrumentation.jdbc.enabled=true"
+      ));
 
   private final String name;
   private final String description;

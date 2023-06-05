@@ -5,9 +5,14 @@ import names from "./names.js";
 const baseUri = `http://petclinic:9966/petclinic/api`;
 
 export default function() {
+
+    http.get(`${baseUri}/specialties`);
+
     const specialtiesUrl = `${baseUri}/specialties`;
     const specialtiesResponse = http.get(specialtiesUrl);
     const specialties = JSON.parse(specialtiesResponse.body);
+
+    http.get(`${baseUri}/vets`);
 
     // Add a new vet to the list
     const newVet = names.randomVet(specialties);
@@ -21,6 +26,8 @@ export default function() {
     const vetUrl = `${baseUri}/vets/${vetId}`
     const vetResponse = http.get(vetUrl);
     check(vetResponse, { "fetch vet status 200": r => r.status === 200 });
+
+    http.get(`${baseUri}/owners`);
 
     // add a new owner
     const newOwner = names.randomOwner();

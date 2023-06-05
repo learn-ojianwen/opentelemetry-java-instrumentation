@@ -52,7 +52,7 @@ public class K6Container {
             "--rps",
             String.valueOf(config.getMaxRequestRate()),
             "--summary-export",
-            k6OutputFile.toString(),
+            k6OutputFile.toString().replaceAll("\\\\","/"),
             "/app/basic.js")
         .withStartupCheckStrategy(
             new OneShotStartupCheckStrategy().withTimeout(Duration.ofMinutes(15)));

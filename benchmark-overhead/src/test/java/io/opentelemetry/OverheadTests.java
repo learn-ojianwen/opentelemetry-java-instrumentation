@@ -118,7 +118,7 @@ public class OverheadTests {
       "settings=/app/overhead.jfc",
       "dumponexit=true",
       "name=petclinic",
-      "filename=" + outFile
+      "filename=" + outFile.toString().replaceAll("\\\\","/")
     };
     petclinic.execInContainer(command);
   }
